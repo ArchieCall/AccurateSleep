@@ -1,14 +1,13 @@
 # ============================================================================================
 function sleep_ns(sleep_time::Float64, threshold::Float64 = default_threshold)
   # ============================================================================================
-  # hybrid sleep for sleep_time secs (uses mixture of busy wait and sleep(ie. Libc.systemsleep) 
+  # accurately sleep for sleep_time secs 
   # ============================================================================================
-  #  if sleep_time is < threshold, busy wait for entire sleep_time
-  #  if sleep_time is > threshold, hybrid sleep as follows:
-  #     1) set actual_time = sleep_time - threshold
-  #     2) if actual_time < .001, actual_time = .001
-  #     3) sleep with function Libc.systemsleep(actual_sleep)
-  #     4) busy wait any remaining time after the sleep in 3) above completes
+  #  if sleep_time is <= threshold, busy wait whole sleep_time
+  #  if sleep_time is >  threshold, hybrid sleep as follows:
+  #     1) actual_sleep = max(.001, sleep_time - threshold)
+  #     2) Libc.systemsleep(actual_sleep)
+  #     3) busy wait remaining time after the sleep in 2) above completes
   # -------------------------------------------------------------------------
   const tics_per_sec = 1_000_000_000.  #-- number of tics in one sec
   nano1 = time_ns()  #-- get beginning time tic for the entire sleep_ns function

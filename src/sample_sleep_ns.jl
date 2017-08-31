@@ -9,7 +9,7 @@ function sample_sleep_ns(sleep_time::Float64, num_samples::Int, threshold::Float
   @printf("sleep_time (secs) => %8.6f\n", sleep_time )
   @printf("threshold (secs)             => %8.6f\n", threshold )
   @printf("number of samples            => %6i\n", num_samples )
-  println(" ... generating samples - please wait...")
+  println(" ... generating sleep_ns samples - please wait...")
   for i = 1:num_samples
     nano3 = time_ns()
     sleep_ns(sleep_time, threshold)

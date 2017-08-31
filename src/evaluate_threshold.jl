@@ -5,11 +5,10 @@ function evaluate_threshold(num_samples::Int = 5000)
   const tics_per_sec = 1_000_000_000.
   #num_samples = 5000
   v = zeros(num_samples)
-  println("... please wait generating samples ...")
+  println("... generating threshold samples -- please wait ...")
   for i = 1:num_samples
     nano3 = time_ns()
     Libc.systemsleep(.001)
-    #sleep(.001)
     nano4 = time_ns()
     slept_time  = (nano4 - nano3) / tics_per_sec
     v[i] = slept_time
@@ -24,8 +23,8 @@ function evaluate_threshold(num_samples::Int = 5000)
   mediantime = median(v)
   mintime = minimum(v)
   println("")
-  @printf("------------- Results for evaluating %5i samples --------------\n", num_samples)
-  @printf("            Command is Libc.systemsleep(.001)\n")
+  @printf("------------- Results for %5i threshold samples --------------\n", num_samples)
+  @printf("            threshold command => Libc.systemsleep(.001)\n")
   @printf("---------------------------------------------------------------\n")
   @printf("maximum         => %7.4f secs\n", maxtime)
   @printf("quantile .999   => %7.4f secs\n", quant999)
@@ -45,26 +44,6 @@ function evaluate_threshold(num_samples::Int = 5000)
   existing_default = AccurateSleep.default_threshold
   @printf("Existing default_threshold  => %7.4f\n", existing_default)
   
-  @show(suggested_default - existing_default)
-
-  #PercentDiff = (abs(suggested_default - existing_default) / ((suggested_default + existing_default) * 0.5)) * 100.0
-  #@show(PercentDiff)
-  
-  if isapprox(suggested_default, existing_default)
-    #---
-    println("")
-    println("Both Suggested and Existing default_threshold are the same value.")
-    println("No change needed to default_threshold in the AccurateSleep module")
-  elseif abs(suggested_default - existing_default) > .002
-    println("")
-    println("Note. Suggested and Existing default_threshold differ substantially!")
-    println("You probably should update default_threshold in the AccurateSleep module")
-  else
-    println("")
-    println("Note. Suggested and Existing default_threshold differ only slightly!")
-    println("Your option to update default_threshold in the AccurateSleep module")
-  end
   println("--------------------------------------------------------------------\n")
-  #sleep_ns(5.0)
   return suggested_default
 end
