@@ -1,6 +1,4 @@
 function demo()
-  #using BenchmarkTools
-  #using AccurateSleep
   #--- warm up the sleep commands
   Libc.systemsleep(1.)
   sleep_ns(.1)

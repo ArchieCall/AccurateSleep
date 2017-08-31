@@ -17,7 +17,7 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = default_threshold)
   const max_sleep = 86_400_000.   #-- maximum allowed sleep_time parm (100 days in secs)
   const min_sleep = .000001000    #-- mininum allowed sleep_time parm (1 micro sec)
   
-  #-- validate the value of sleep_time parm
+  #-- verify if sleep_time is within limits
   if sleep_time < min_sleep
     @printf("parameter error:  sleep_time => %10.8f is less than %10.8f secs!!\n", sleep_time, min_sleep)
     println("program halted ==> specified sleep time is too low!")
@@ -32,17 +32,11 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = default_threshold)
     return -2.0    #-- parm error negative return
   end
   
-  #--- calc actual_sleep time
-  actual_sleep = 0.
-  if sleep_time > threshold  
-    actual_sleep = sleep_time - threshold  #-- actual_sleep is the amount over the threshold
-    if actual_sleep < min_actual_sleep   
-      actual_sleep = min_actual_sleep  #-- set actual_sleep to minimum if too small
-    end  
-  end
-  
-  if actual_sleep > 0.
-    Libc.systemsleep(actual_sleep)  #--- perform the actual sleep only if needed
+  #------ actual sleep
+  if sleep_time > threshold  #-- sleep only if above threshold
+    #-- actual_sleep_time must be at least min_actual_sleep
+    actual_sleep_time = max(min_actual_sleep, sleep_time - threshold)
+    Libc.systemsleep(actual_sleep_time)
   end
   
   #------ final busy wait
@@ -51,6 +45,7 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = default_threshold)
     nano3 >= nano2 && break   #-- break out if sleep_time has been exceeded
     nano3 = time_ns()
   end
+
   seconds_over = (nano3 - nano2) / tics_per_sec  #-- seconds that sleep_time was exceeded
   return seconds_over
 end #-- end of sleep_ns

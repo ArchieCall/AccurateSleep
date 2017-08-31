@@ -1,4 +1,3 @@
-# ================================================================
 function evaluate_threshold(num_samples::Int = 5000)
   # =================================================================
   # sample Libc.systemsleep(.001) to determine a potential threshold
