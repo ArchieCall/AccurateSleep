@@ -1,5 +1,10 @@
 function set_threshold(threshold::Float64)
-  FullPath1 = "C://Users//Owner//.julia//v0.6//AccurateSleep//src//sleep_threshold.jl"
+  PkgDir = Pkg.dir()
+  PkgName = "\\AccurateSleep"
+  SubFolderPath = "\\src\\"
+  FileName = "sleep_threshold.jl"
+  FullPath1 = PkgDir * PkgName * SubFolderPath * FileName
+  #FullPath1 = "C://Users//Owner//.julia//v0.6//AccurateSleep//src//sleep_threshold.jl"
   sfull = string(threshold)
   string_threshold = sfull[1:6]
   new_threshold = "threshold = " * string_threshold

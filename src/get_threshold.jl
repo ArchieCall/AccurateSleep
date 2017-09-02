@@ -22,7 +22,7 @@ function get_threshold()
   if isfile(FullPath1)
     #println("found default")
     threshold = include(FullPath1)
-    @show(threshold)
+    #@show(threshold)
   else
     println("default not found")
   end
