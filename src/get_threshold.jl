@@ -4,7 +4,7 @@ function get_threshold()
   elseif is_linux()
     threshold = 0.0020  #-- for linux
   else
-    threshold = .0050   #-- for apple or unix 
+    threshold = .0051   #-- for apple or unix 
   end
   threshold = .0151
   PkgDir = Pkg.dir()
