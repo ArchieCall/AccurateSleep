@@ -3,7 +3,7 @@ function get_threshold()
   if is_windows()
     threshold = 0.0175  #-- for windows
   elseif is_linux()
-    threshold = 0.0022  #-- for linux
+    threshold = 0.0026  #-- for linux
   else
     threshold = .0053   #-- for apple or unix 
   end
