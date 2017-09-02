@@ -1,4 +1,4 @@
-function evaluate_threshold(num_samples::Int = 5000)
+function evaluate_threshold(num_samples::Int = 5000, update_threshold::Bool = false)
   # =================================================================
   # sample Libc.systemsleep(.001) to determine a potential threshold
   # =================================================================
@@ -35,14 +35,18 @@ function evaluate_threshold(num_samples::Int = 5000)
   @printf("mean            => %7.4f secs\n", meantime)
   @printf("median          => %7.4f secs\n", mediantime)
   @printf("minimum         => %7.4f secs\n", mintime)
-
+  
   setrounding(Float64, RoundUp)
-  suggested_default = round(quant999, 4) + .0002
+  suggested_default = round(quant999, 4) + round(.0002,4)
   println("")
   @printf("Suggested default_threshold => %7.4f\n", suggested_default)
   
-  existing_default = AccurateSleep.default_threshold
+  #existing_default = AccurateSleep.default_threshold
+  existing_default = AccurateSleep.get_threshold()
   @printf("Existing default_threshold  => %7.4f\n", existing_default)
+  if update_threshold
+    set_threshold(suggested_default)
+  end
   
   println("--------------------------------------------------------------------\n")
   return suggested_default

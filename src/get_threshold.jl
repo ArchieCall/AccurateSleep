@@ -1,31 +1,29 @@
 function get_threshold()
   if is_windows()
-    default_threshold = 0.0175  #-- for windows
+    threshold = 0.0175  #-- for windows
   elseif is_linux()
-    default_threshold = 0.0020  #-- for linux
+    threshold = 0.0020  #-- for linux
   else
-    default_threshold = .0050   #-- for apple or unix 
+    threshold = .0050   #-- for apple or unix 
   end
-  default_threshold = .0151
-  #FilePath = pwd()
-  #PkgPath = "\\src\\"
-  #FileName = "default_threshold.jl"
-  #FullPath = FilePath * PkgPath * FileName
-  #println(FullPath)
-  #FullPath1 = "C://Users//Owner//.julia//v0.6//AccurateSleep//src//default_threshold.jl"
-  FullPath1 = "C://Users//Owner//.julia//v0.6//AccurateSleep//src//sleep_threshold.jl"
-  #FullPath1 = "C://ArchieJunk//Cody.jl"
-  #found_default = isfile(FullPath1)
+  threshold = .0151
+  PkgDir = Pkg.dir()
+  PkgName = "\\AccurateSleep"
+  SubFolderPath = "\\src\\"
+  FileName = "sleep_threshold.jl"
+  @show(PkgDir)
+  @show(PkgName)
+  @show(SubFolderPath)
+  @show(FileName)
+  FullPath1 = PkgDir * PkgName * SubFolderPath * FileName
+  @show(FullPath1)
+  #FullPath1 = "C://Users//Owner//.julia//v0.6//AccurateSleep//src//sleep_threshold.jl"
   if isfile(FullPath1)
     println("found default")
-    crabbyjoe = 100
-    @show(crabbyjoe)
-    include(FullPath1)
-    sleep_threshold()
-    @show(crabbyjoe)
-    @show(default_threshold)
+    threshold = include(FullPath1)
+    #@show(default_threshold)
   else
     println("default not found")
   end
-  return default_threshold
+  return threshold
 end
