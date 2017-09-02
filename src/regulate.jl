@@ -1,4 +1,4 @@
-function evaluate_threshold(num_samples::Int = 5000, update_threshold::Bool = false)
+function regulate(num_samples::Int = 5000, update_threshold::Bool = false)
   # =================================================================
   # sample Libc.systemsleep(.001) to determine a potential threshold
   # =================================================================
