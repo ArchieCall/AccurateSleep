@@ -1,4 +1,5 @@
 function get_threshold()
+  #--- i added this comment
   if is_windows()
     threshold = 0.0175  #-- for windows
   elseif is_linux()
