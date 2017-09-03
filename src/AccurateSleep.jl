@@ -8,7 +8,5 @@ include("sleep_ns.jl")
 include("simulate.jl")
 include("regulate.jl")
 include("demo.jl")
-#@show(default_threshold)
 export sleep_ns
-println(now())
 end #-- end of module
