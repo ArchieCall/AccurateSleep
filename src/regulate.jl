@@ -19,6 +19,7 @@ function regulate(num_samples::Int = 100; update::Bool = false, quiet::Bool = tr
   quant99 = quantile(v, .990; sorted=false)
   quant95 = quantile(v, .950; sorted=false)
   quant90 = quantile(v, .900; sorted=false)
+  quant75 = quantile(v, .750; sorted=false)
   maxtime = maximum(v)
   meantime = mean(v)
   mediantime = median(v)
@@ -34,22 +35,24 @@ function regulate(num_samples::Int = 100; update::Bool = false, quiet::Bool = tr
     @printf("quantile .99    => %7.4f secs\n", quant99)
     @printf("quantile .95    => %7.4f secs\n", quant95)
     @printf("quantile .90    => %7.4f secs\n", quant90)
+    @printf("quantile .75    => %7.4f secs\n", quant75)
     @printf("mean            => %7.4f secs\n", meantime)
     @printf("median          => %7.4f secs\n", mediantime)
     @printf("minimum         => %7.4f secs\n", mintime)
   end
   
   setrounding(Float64, RoundUp)
-  suggested_default = round(quant999, 4) + round(.0002,4)
-  existing_default = AccurateSleep.get_threshold()
+  suggested_transient = round(quant999, 4) + round(.0002,4)
+  transient_threshold, permanent_threshold = AccurateSleep.get_threshold()
   if !quiet
-    @printf("Suggested default_threshold => %7.4f\n", suggested_default)
-    @printf("Existing default_threshold  => %7.4f\n", existing_default)
+    @printf("Stored transient_threshold     => %7.4f\n", transient_threshold)
+    @printf("Stored permanent_threshold     => %7.4f\n", permanent_threshold)
+    @printf("Suggested transient_threshold  => %7.4f\n", suggested_transient)
   end
   if update
-    set_threshold(suggested_default)
+    set_threshold(suggested_transient, "T")
   end
-  
   println("--------------------------------------------------------------------\n")
-  return suggested_default
+  #return suggested_transient
+  return nothing
 end
