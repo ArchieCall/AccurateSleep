@@ -2,6 +2,7 @@
 #=
 TODO:
 unit tests
+decide on what vars to export
 =#
 module AccurateSleep
 using BenchmarkTools
