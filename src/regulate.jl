@@ -48,11 +48,11 @@ function regulate(num_samples::Int = 100; update::Bool = false, quiet::Bool = tr
     @printf("Stored transient_threshold     => %7.4f\n", transient_threshold)
     @printf("Stored permanent_threshold     => %7.4f\n", permanent_threshold)
     @printf("Suggested transient_threshold  => %7.4f\n", suggested_transient)
+    println("--------------------------------------------------------------------\n")
   end
   if update
     set_threshold(suggested_transient, "T")
   end
-  println("--------------------------------------------------------------------\n")
   #return suggested_transient
   return nothing
 end

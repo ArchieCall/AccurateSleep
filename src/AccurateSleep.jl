@@ -1,8 +1,9 @@
-#-- 09-04-2017
+#-- 09-08-2017
 #=
 TODO:
 unit tests
-decide on what vars to export
+decide on what vars and functions to export
+warn user if permanent_threshold or transient_threshold are not set
 =#
 module AccurateSleep
 using BenchmarkTools
@@ -16,5 +17,6 @@ include("sleep_ns.jl")
 include("simulate.jl")
 include("regulate.jl")
 include("demo.jl")
+include("StartUp.jl")
 export sleep_ns
 end #-- end of module
