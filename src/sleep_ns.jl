@@ -19,9 +19,21 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
   const tics_per_sec = 1_000_000_000.  #-- number of tics in one sec
   nano1 = time_ns()                            #-- beginning nano time
   nano2 = nano1 + (sleep_time * tics_per_sec)  #-- final nano time
-  const min_actual_sleep = .001   #-- do not let the actual_sleep be less than this value
   const max_sleep = 86_400_000.   #-- maximum allowed sleep_time parm (100 days in secs)
   const min_sleep = .000001000    #-- mininum allowed sleep_time parm (1 micro sec)
+  
+  #------------------------------------------------------------------------------
+  #   Libc.systemsleep(secs) has no bearing to reality if it is sleeping
+  #   for less than .001 secs.
+  #
+  #   The sleep_threshold setting is determined by sampling Libc.systemsleep(.001) over
+  #   many samples and then setting the threshold to a value such that its elapsed time
+  #   is within quantile = .995 of the samples.
+  #
+  #   When true sleeping kicks in (ie. sleep_time is above the threshold),
+  #   min_true_sleep is the minimum that Libc.systemsleep is allowed to sleep.
+  #-----------------------------------------------------------------------------
+  const min_true_sleep = .001   #-- warning do not change this value
   
   #-- verify if sleep_time is within limits
   if sleep_time < min_sleep
@@ -38,10 +50,18 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
     return -2.0    #-- parm error negative return
   end
 
+  #-- threshold is too low
+  if threshold < min_true_sleep
+    @printf("parameter error:  threshold => %8.4f is less than %8.4f secs!!\n", threshold, min_true_sleep)
+    println("sleep_ns aborted ==> specified threshold is too low!")
+    sleep(2.)
+    return -3.0   #-- parm error negative return
+  end
+
   #------ actual sleep
   if sleep_time > threshold  #-- sleep only if above threshold
-    #-- actual_sleep_time must be at least min_actual_sleep
-    actual_sleep_time = max(min_actual_sleep, sleep_time - threshold)
+    #-- actual_sleep_time must be at least min_true_sleep
+    actual_sleep_time = max(min_true_sleep, sleep_time - threshold)
     Libc.systemsleep(actual_sleep_time)
   end
   

@@ -1,1 +1,1 @@
-sleep_threshold = .0171
+sleep_threshold = -.0170

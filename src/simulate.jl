@@ -1,7 +1,7 @@
 # =====================================================================================================
 function simulate(sleep_time::Float64, num_samples::Int, threshold::Float64 = sleep_threshold)
   # ===================================================================================================
-  # sample sleep_ns over num_samples using specified threshold
+  # simulate sleep_ns over num_samples using specified threshold
   # ===================================================================================================
   const tics_per_sec = 1_000_000_000.
   v = zeros(num_samples)
