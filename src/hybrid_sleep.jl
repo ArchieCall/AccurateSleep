@@ -1,5 +1,5 @@
 # ============================================================================================
-function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
+function hybrid_sleep(sleep_time::Float64, threshold::Float64 = .0175)
   # ============================================================================================
   # accurately sleep for sleep_time secs 
   # ============================================================================================
@@ -9,12 +9,6 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
   #     2) Libc.systemsleep(actual_sleep)
   #     3) busy wait remaining time when 2) completes
   # -------------------------------------------------------------------------
-  
-  #TODO:
-  # do not let sleep_threshold be less than .001
-  # how to abort or trap on min max errors
-
-  #FIXME:  cowboys in your soup
   
   const tics_per_sec = 1_000_000_000.  #-- number of tics in one sec
   nano1 = time_ns()                            #-- beginning nano time

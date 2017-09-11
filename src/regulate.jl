@@ -1,19 +1,20 @@
-function regulate(num_samples::Int = 100; update::Bool = false, quiet::Bool = true)
+function regulate(num_samples::Int = 100; update::Bool = false, verbose::Bool = false)
   # =================================================================
-  # sample Libc.systemsleep(.001) to determine a potential threshold
+  # sample Libc.systemsleep(.001) to determine suggested threshold
   # =================================================================
   const tics_per_sec = 1_000_000_000.
-  v = zeros(num_samples)
-  if !quiet
+  v = zeros(num_samples)  #-- setup the sample array v
+  if verbose
     println("... generating threshold samples -- please wait ...")
   end
   for i = 1:num_samples
     nano3 = time_ns()
-    Libc.systemsleep(.001)
+    Libc.systemsleep(.001)  #-- sleep .001 secs
     nano4 = time_ns()
-    slept_time  = (nano4 - nano3) / tics_per_sec
-    v[i] = slept_time
+    slept_time  = (nano4 - nano3) / tics_per_sec  #-- actual secs slept
+    v[i] = slept_time  #-- put slecpt secs in the array
   end
+  #-- compute various quantile stats
   quant999 = quantile(v, .999; sorted=false)
   quant995 = quantile(v, .995; sorted=false)
   quant99 = quantile(v, .990; sorted=false)
@@ -24,7 +25,7 @@ function regulate(num_samples::Int = 100; update::Bool = false, quiet::Bool = tr
   meantime = mean(v)
   mediantime = median(v)
   mintime = minimum(v)
-  if !quiet
+  if verbose
     println("")
     @printf("------------- Results for %5i threshold samples --------------\n", num_samples)
     @printf("            threshold command => Libc.systemsleep(.001)\n")
@@ -41,18 +42,22 @@ function regulate(num_samples::Int = 100; update::Bool = false, quiet::Bool = tr
     @printf("minimum         => %7.4f secs\n", mintime)
   end
   
-  setrounding(Float64, RoundUp)
-  suggested_transient = round(quant999, 4) + round(.0002,4)
-  transient_threshold, permanent_threshold = AccurateSleep.get_threshold()
-  if !quiet
-    @printf("Stored transient_threshold     => %7.4f\n", transient_threshold)
-    @printf("Stored permanent_threshold     => %7.4f\n", permanent_threshold)
-    @printf("Suggested transient_threshold  => %7.4f\n", suggested_transient)
+  setrounding(Float64, RoundUp)  #-- set rounding mode
+  
+  #-- suggestion is .0001 secs greater than quantile .995
+  suggested_threshold = round(quant995 + .0001, 4)   
+  
+  #-- get the previously stored thresholds
+  sleep_threshold = AccurateSleep.get_threshold()
+  
+  if verbose
+    @printf("Stored sleep_threshold     => %7.4f\n", sleep_threshold)
+    @printf("Suggested sleep_threshold  => %7.4f\n", suggested_threshold)
     println("--------------------------------------------------------------------\n")
   end
+  
   if update
-    set_threshold(suggested_transient, "T")
+    set_threshold(suggested_threshold)  #-- set the stored sleep_threshold
   end
-  #return suggested_transient
-  return nothing
+  return suggested_threshold
 end

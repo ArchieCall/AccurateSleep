@@ -1,5 +1,5 @@
 # =====================================================================================================
-function simulate(sleep_time::Float64, num_samples::Int, threshold::Float64 = sleep_ns_threshold)
+function simulate(sleep_time::Float64, num_samples::Int, threshold::Float64 = sleep_threshold)
   # ===================================================================================================
   # sample sleep_ns over num_samples using specified threshold
   # ===================================================================================================
@@ -46,6 +46,7 @@ function simulate(sleep_time::Float64, num_samples::Int, threshold::Float64 = sl
   @printf("minumum_time   => %11.9f\n", minimum_time)
   println("------------------------------------------")
   v = 0  #-- reclaim memory from potentially large array
+  # FIXME:  is gc really needed
   sleep(1.)
   gc()
   sleep(1.)
