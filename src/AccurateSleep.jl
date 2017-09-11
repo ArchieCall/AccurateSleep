@@ -2,6 +2,7 @@
 #=
 TODO:
 unit tests
+test integration with gitkraken
 =#
 module AccurateSleep
 using BenchmarkTools
