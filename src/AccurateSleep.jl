@@ -19,7 +19,6 @@ include("sleep_ns.jl")
 include("hybrid_sleep.jl")
 include("simulate.jl")
 include("demo.jl")
-@show(now())
-@show(sleep_threshold)
+@printf("Stored sleep_threshold > %8.4f secs\n", sleep_threshold)
 export sleep_ns
 end #-- end of module
