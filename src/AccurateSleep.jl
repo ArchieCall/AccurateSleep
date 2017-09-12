@@ -2,7 +2,7 @@
 #=
 TODO:
 better unit tests
-test integration with gitkraken
+should I do a branch for AccurateSleep project
 how to handle parm errors and exit gracefully
 =#
 module AccurateSleep
