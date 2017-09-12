@@ -23,8 +23,7 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
   const min_sleep = .000001000    #-- mininum allowed sleep_time parm (1 micro sec)
   
   #------------------------------------------------------------------------------
-  #   Libc.systemsleep(secs) has no bearing to reality if it is sleeping
-  #   for less than .001 secs.
+  #   Libc.systemsleep(secs) has no accuracy if sleeping for less than .001 secs.
   #
   #   The sleep_threshold setting is determined by sampling Libc.systemsleep(.001) over
   #   many samples and then setting the threshold to a value such that its elapsed time

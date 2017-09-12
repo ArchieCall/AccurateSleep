@@ -50,5 +50,6 @@ function simulate(sleep_time::Float64, num_samples::Int, threshold::Float64 = sl
   sleep(1.)
   gc()
   sleep(1.)
+  return nothing
   
 end

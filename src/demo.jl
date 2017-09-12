@@ -59,4 +59,5 @@ function demo()
     #AccurateSleep.sample_sleep_ns(.030, 1000, .010)
     #AccurateSleep.sample_sleep_ns(.030, 1000, .0015)
   end
+  return nothing
 end

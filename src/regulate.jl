@@ -58,6 +58,10 @@ function regulate(num_samples::Int = 100; update::Bool = false, verbose::Bool = 
   
   if update
     set_threshold(suggested_threshold)  #-- set the stored sleep_threshold
+    if verbose
+      println("Stop and restart Julia for the new threshold to become effective!")
+      println(" ")
+    end
   end
   return suggested_threshold
 end

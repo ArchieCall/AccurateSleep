@@ -4,7 +4,7 @@ function set_threshold(sleep_threshold::Float64)
   #-- note: if sleep_threshold is .0174, the file contains only one line of
   #   sleep_threshold = .0174
   #-- the file is subsequently included in get_threshold()
-  #-- threshold is too low
+  
   const min_true_sleep = .001  #-- allowed minimum threshold
   if sleep_threshold < min_true_sleep
     @printf("parameter error:  sleep_threshold => %6.4f is less than %6.4f secs!!\n", sleep_threshold, min_true_sleep)
@@ -12,6 +12,7 @@ function set_threshold(sleep_threshold::Float64)
     sleep(2.)
     return -3.0   #-- parm error negative return
   end
+  
   PkgDir = Pkg.dir()
   PkgName = "\\AccurateSleep"
   SubFolderPath = "\\src\\"
@@ -24,4 +25,5 @@ function set_threshold(sleep_threshold::Float64)
   f = open(FullFilePath, "w")
   write(f, new_threshold)
   close(f)
+  return nothing
 end
