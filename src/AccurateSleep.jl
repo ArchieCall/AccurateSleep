@@ -1,9 +1,9 @@
-#-- 09-11-2017
+#-- 09-12-2017
 #=
 TODO:
-unit tests
+better unit tests
 test integration with gitkraken
-test worked
+how to handle parm errors and exit gracefully
 =#
 module AccurateSleep
 using BenchmarkTools
@@ -13,7 +13,7 @@ include("regulate.jl")
 sleep_threshold = get_threshold()
 if isapprox(sleep_threshold, 0.0)
   println("... initial threshold is being calculated ...")
-  sleep_threshold = regulate(2000, update = true, verbose = true)  #-- update transient
+  sleep_threshold = regulate(2000, update = true, verbose = true)  #-- update threshold
 end
 include("sleep_ns.jl")
 include("hybrid_sleep.jl")
