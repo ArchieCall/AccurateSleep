@@ -52,9 +52,7 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
   #-- threshold is too low
   if threshold < min_true_sleep
     @printf("parameter error:  threshold => %8.4f is less than %8.4f secs!!\n", threshold, min_true_sleep)
-    println("sleep_ns aborted ==> specified threshold is too low!")
-    sleep(2.)
-    return -3.0   #-- parm error negative return
+    error("threshold below allowed minimum")
   end
 
   #------ actual sleep

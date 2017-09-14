@@ -1,9 +1,11 @@
-#-- 09-12-2017
+#-- 09-14-2017
 #=
 TODO:
 better unit tests
 should I do a branch for AccurateSleep project
 how to handle parm errors and exit gracefully
+. return a negative Float64
+markdown for README.md
 =#
 module AccurateSleep
 using BenchmarkTools
