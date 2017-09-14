@@ -1,15 +1,14 @@
-#-- play with something
-errno = 0
-function funca(value::Float64)
-  if value < 0.0
-    end
-  end 
-  g = sqrt(value)
-  println(g)
-  return g
+using BenchmarkTools
+using AccurateSleep
+println("StartUp")
+sleep_ns(.1)
+function goober()
+  println("before first call")
+  @show(sleep_ns(.1))
+  println("@benchmark sleep_ns(.04)")
+  display(@benchmark sleep_ns(.04))
+  sleep_ns(.1, -2.0)
+  @printf("\nafter call that errors out - this line should not have executed!\n")
 end
-funca(4.)
-funca(-4.)
-funca(9.)
-  
+goober()
 println("done")

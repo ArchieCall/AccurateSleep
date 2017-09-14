@@ -3,8 +3,8 @@
 TODO:
 better unit tests
 should I do a branch for AccurateSleep project
-how to handle parm errors and exit gracefully
-. return a negative Float64
+finish off min-max sleep_time errors and min threshold error
+rename SleepTime to sleep_time
 markdown for README.md
 =#
 module AccurateSleep

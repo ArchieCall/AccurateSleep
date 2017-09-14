@@ -5,3 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/ArchieCall/AccurateSleep.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/ArchieCall/AccurateSleep.jl?branch=master)
 
 [![codecov.io](http://codecov.io/github/ArchieCall/AccurateSleep.jl/coverage.svg?branch=master)](http://codecov.io/github/ArchieCall/AccurateSleep.jl?branch=master)
+
+```
+println("Archie was here")
+```
