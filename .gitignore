@@ -1,5 +1,4 @@
 *.jl.cov
 *.jl.*.cov
 *.jl.mem
-transient_threshold.jl
-permanent_threshold.jl
+sleep_threshold.jl
