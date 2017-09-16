@@ -1,10 +1,10 @@
 using BenchmarkTools
 using AccurateSleep
 println("StartUp")
-sleep_ns(.1)
 
 tic()
 try
+  sleep_ns(1)
   for u = 1:100_000
     sleep_ns(.00001)
   end

@@ -48,16 +48,16 @@ function regulate(num_samples::Int = 100; update::Bool = false, verbose::Bool = 
   suggested_threshold = round(quant995 + .0001, 4)   
   
   #-- get the previously stored thresholds
-  sleep_threshold = AccurateSleep.get_threshold()
+  threshold_default = AccurateSleep.get_threshold()
   
   if verbose
-    @printf("Stored sleep_threshold     => %7.4f\n", sleep_threshold)
-    @printf("Suggested sleep_threshold  => %7.4f\n", suggested_threshold)
+    @printf("Stored threshold_default     => %7.4f\n", threshold_default)
+    @printf("Suggested threshold_default  => %7.4f\n", suggested_threshold)
     println("--------------------------------------------------------------------\n")
   end
   
   if update
-    set_threshold(suggested_threshold)  #-- set the stored sleep_threshold
+    set_threshold(suggested_threshold)  #-- set the stored threshold_default
     if verbose
       println("Stop and restart Julia for the new threshold to become effective!")
       println(" ")

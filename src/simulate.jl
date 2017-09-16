@@ -1,5 +1,5 @@
 # =====================================================================================================
-function simulate(sleep_time::Float64, num_samples::Int, threshold::Float64 = sleep_threshold)
+function simulate(sleep_time::Float64, num_samples::Int, threshold::Float64 = threshold_default)
   # ===================================================================================================
   # simulate sleep_ns over num_samples using specified threshold
   # ===================================================================================================

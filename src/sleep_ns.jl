@@ -1,5 +1,5 @@
 # ============================================================================================
-function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
+function sleep_ns(sleep_time::Float64, threshold::Float64 = threshold_default)
   # ============================================================================================
   # accurately sleep for sleep_time secs 
   # ============================================================================================
@@ -10,11 +10,6 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
   #     3) busy wait remaining time when 2) completes
   # -------------------------------------------------------------------------
   
-  #TODO:
-  # do not let sleep_threshold be less than .001
-  # how to abort or trap on min max errors
-
-  #FIXME:  cowboys in your soup
   
   const tics_per_sec = 1_000_000_000.  #-- number of tics in one sec
   nano1 = time_ns()                            #-- beginning nano time
@@ -25,7 +20,7 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
   #------------------------------------------------------------------------------
   #   Libc.systemsleep(secs) has no accuracy if sleeping for less than .001 secs.
   #
-  #   The sleep_threshold setting is determined by sampling Libc.systemsleep(.001) over
+  #   The threshold setting is determined by sampling Libc.systemsleep(.001) over
   #   many samples and then setting the threshold to a value such that its elapsed time
   #   is within quantile = .995 of the samples.
   #
@@ -39,14 +34,14 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
     @printf("parameter error:  sleep_time => %10.8f is less than %10.8f secs!!\n", sleep_time, min_sleep)
     println("sleep_ns aborted ==> specified sleep time is too low!")
     sleep(2.)
-    return -1.0   #-- parm error negative return
+    error("sleep_time is too low!")
   end
   
   if sleep_time > max_sleep
     @printf("parameter error:  sleep_time => %12.1f is greater than %10.1f secs!!\n", sleep_time, max_sleep)
     println("sleep_ns aborted ==> specified sleep time is too high!")
     sleep(2.)
-    return -2.0    #-- parm error negative return
+    error("sleep_time is too high!")
   end
 
   #-- threshold is too low
@@ -54,7 +49,7 @@ function sleep_ns(sleep_time::Float64, threshold::Float64 = sleep_threshold)
     @printf("parameter error:  threshold => %8.4f is less than %8.4f secs!!\n", threshold, min_true_sleep)
     error("threshold below allowed minimum")
   end
-
+  
   #------ actual sleep
   if sleep_time > threshold  #-- sleep only if above threshold
     #-- actual_sleep_time must be at least min_true_sleep
